@@ -58,7 +58,49 @@ namespace Trees{
 				current = current -> left;
 			}
 		}
-	};
+		void delete_the_element(int val){
+			current = root;
+			while(1){
+				if(val > current -> key && current -> right != nullptr){
+					current = current -> right;
+				}
+				else if(val < current -> key && current -> left != nullptr){
+					current = current -> left;
+				}
+				else{
+					break;
+				}
+			}
+
+			Node* temp;
+			if(current -> right != nullptr && current -> left != nullptr){
+				(current -> right) -> parent = current -> parent;
+				for(temp = (current -> right); temp != nullptr; temp = temp -> left){}
+				(current -> left) -> parent = temp;	
+			}
+
+			if((current -> parent) -> key > val){
+					if(current -> right != nullptr){
+						(current -> right) -> parent = current -> parent;
+						(current -> parent) -> left = current -> right;
+					}
+					else{
+						(current -> left) -> parent = current -> parent;
+						(current -> parent) -> left = current -> left;
+					}		
+				}
+			else{
+				if(current -> right != nullptr){
+					(current -> right) -> parent = current -> parent;
+					(current -> parent) -> right = current -> right;
+				}
+				else{
+					(current -> left) -> parent = current -> parent;
+					(current -> parent) -> right = current -> left;
+				}		
+			}
+		}
+	};	
 }
 
 int main(){
