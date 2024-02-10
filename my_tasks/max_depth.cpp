@@ -2,49 +2,44 @@
 
 struct TreeNode {
 	int val;
-	TreeNode *left;
-	TreeNode *right;
-	TreeNode() : val(0), left(nullptr), right(nullptr) {}
-	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-	~TreeNode(){delete left; delete right;}
+	TreeNode* left, * right;
+	TreeNode(): val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x): val(x), left(nullptr), right(nullptr){}
+	TreeNode(int x, TreeNode *left, TreeNode *right): val(x), left(left), right(right) {}
+	TreeNode(const TreeNode& temp) = delete;
+	~TreeNode(){
+		delete left; 
+		delete right;
+		}
 };
 
-struct tree{
-	public:
-	TreeNode* nd = nullptr;
-	TreeNode* add_to_the_left(TreeNode* curr, int number);
-	TreeNode* add_to_the_right(TreeNode* curr, int number);
-	
-};
-
-TreeNode* tree::add_to_the_left(TreeNode* curr, int number){
-	TreeNode* temp = new TreeNode(number);
-	curr -> left = temp;
-	curr = curr -> left;
-	return curr;
-}
-
-TreeNode* tree::add_to_the_right(TreeNode* curr, int number){
-	TreeNode* temp = new TreeNode(number);
-	curr -> right = temp;
-	curr = curr -> right;
-	return curr;
-}
-
-
-/*class Solution {
+class Solution {
 public:
-	int maxDepth(TreeNode* root) {
-	
-}
-};*/
+	int maxDepth(TreeNode* root){
+		if(root == nullptr){
+			return 0;
+		}
+		else{
+			int number_left = maxDepth(root -> left);
+			int number_right = maxDepth(root -> right);
+			return maximum_number(number_left, number_right) + 1;
+		}
+	}
+
+	int maximum_number(int f_number, int s_number){
+		int result = f_number >= s_number ? f_number : s_number;
+		return result;
+	}
+
+	Solution(){};
+	~Solution(){}
+};
 
 int main(){
-	tree our;
-	if(our.nd == nullptr){
-		our.nd = new TreeNode();
-	}
-	std::cout << our.nd -> val <<"\n";
+	TreeNode start;
+	start.left = new TreeNode(5);
+	start.left->left = new TreeNode(6);
+	Solution a;
+	std::cout << a.maxDepth(&start) << std::endl;
 	return 0;
 }
