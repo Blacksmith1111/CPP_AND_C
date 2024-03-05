@@ -44,31 +44,19 @@ void Tree::Insert(const std::vector<std::string>& node){
 	for(auto iter = node.begin(); iter != node.end(); iter++){
 		temp = &(temp->children[*iter]);
 	}
-}
+};
 
 void Tree::Delete(const std::vector<std::string>& node){
-    std::vector<Node*> nodes_to_delete;
-    Node* current = &root;
-	Node* previous = nullptr;
-	        
-	for(auto& key : node){
-        auto it = current->children.find(key);
-        if(it == current->children.end()){
-            return; // Ветки нет, прекращаем процесс удаления
+        Node* current = &root;
+        for (const auto& key : node) {
+            auto it = current->children.find(key);
+            if (it == current->children.end()) {
+                return; 
+            }
+            if (current->children.size() == 1) {
+                current->children.erase(it);
+                return;
+            }
+            current = &it->second;
         }
-		
-        current = &it->second;
-		if(current -> children.find(node.back()) != current -> children.end()){
-			previous =  current; // must go there only once in a loop
-		}
-    }
-
-	if(current -> children.size() == 1){
-		previous -> children.erase(node.back());
-		return;
-	}
-
-	for(auto it = current -> children.begin(); it != current -> children.end(); it++){
-
-	}    
-}
+};
