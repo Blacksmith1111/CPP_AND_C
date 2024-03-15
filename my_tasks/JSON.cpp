@@ -13,36 +13,26 @@ public:
 class JsonSerializer : public Serializer{
 public:
 	void BeginArray() override{
-		std::cout << "[";
+		base_str += "[";
 	}
 	void AddArrayItem(const std::string& str) override{
-		std::string comma = ",";
+		base_str += quotation_mark;
 		base_str += str;
+		base_str += quotation_mark;
 		base_str += comma;
-		// std::cout << "\"" << str << "\"" << ",";
 	}
 	void EndArray() override{
-		if(!base_str.empty()){
+		if(base_str.rfind(comma) == base_str.size() - 1 && base_str.rfind(comma) != std::string::npos){
 			base_str.pop_back();
-			std::cout << "\"" << base_str << "\"" << "]";	
-			base_str.clear();
 		}
-		else{
-			std::cout << "]";
-		}
+		base_str += "]";	
+	}
+	JsonSerializer(){}
+	~JsonSerializer(){
+		std::cout << base_str << "\n";
 	}
 private:
 	std::string base_str = {};
+	std::string comma = ",";
+	std::string quotation_mark = "\"";
 };
-
-int main(){
-	JsonSerializer j;
-	Serializer& s = j;
-	s.BeginArray();
-	s.BeginArray();
-	s.AddArrayItem("hi");
-	s.AddArrayItem("John");
-	s.EndArray();
-	s.EndArray();
-	return 0;
-}
